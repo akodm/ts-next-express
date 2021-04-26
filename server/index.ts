@@ -20,7 +20,7 @@ const app = next({ dev });
 const handler = routes.getRequestHandler(app);
 
 const corsOptions = {
-  origin: ["*"],
+  origin: [process.env.CLIENT as string],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   optionsSuccessStatus: 200
 };
@@ -55,7 +55,7 @@ app.prepare().then(() => {
       message,
       data: null
     });
-  })
+  });
 
   // add socket.io..
 
@@ -64,4 +64,7 @@ app.prepare().then(() => {
     console.log("Next Server running.");
     process.send && process.send("ready");
   });
+}).catch(err => {
+  console.log("Express Server Error: ", err);
+  process.exit(1);
 });
